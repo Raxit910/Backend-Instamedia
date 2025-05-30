@@ -8,7 +8,7 @@
     "start": "node server.js",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "lint-staged": {
     "**/*.{js,jsx}": [
@@ -24,6 +24,7 @@
   "dependencies": {
     "@prisma/client": "^6.8.2",
     "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
@@ -32,6 +33,7 @@
     "prisma": "^6.8.2"
   },
   "devDependencies": {
+    "@eslint/compat": "^1.2.9",
     "eslint": "^9.27.0",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-import": "^2.31.0",
