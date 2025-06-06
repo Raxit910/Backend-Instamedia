@@ -50,7 +50,7 @@ export const login = async (req, res) => {
       },
     });
 
-    if (!user || !user.isActive) {
+    if (!user) {
       return res.status(STATUS.UNAUTHORIZED).json({
         success: false,
         message: MESSAGES.AUTH.INVALID_CREDENTIALS,
@@ -63,6 +63,29 @@ export const login = async (req, res) => {
         success: false,
         message: MESSAGES.AUTH.INVALID_CREDENTIALS,
       });
+    }
+
+    if (!user.isActive) {
+      try {
+        const token = generateToken({ userId: user.id });
+        await sendActivationEmail(user.email, token);
+
+        return res.status(STATUS.FORBIDDEN).json({
+          success: false,
+          message: MESSAGES.AUTH.ACCOUNT_NOT_ACTIVATED,
+          needsActivation: true,
+          data: {
+            message: MESSAGES.AUTH.NEW_ACTIVATION_LINK_SENT,
+            email: user.email,
+          },
+        });
+      } catch (emailError) {
+        return res.status(STATUS.SERVER_ERROR).json({
+          success: false,
+          message: MESSAGES.COMMON.SERVER_ERROR,
+          error: emailError.message,
+        });
+      }
     }
 
     const token = generateToken({ userId: user.id });
@@ -87,11 +110,13 @@ export const login = async (req, res) => {
       success: true,
       message: MESSAGES.AUTH.LOGIN_SUCCESS,
       data: {
-        token,
+        // token,
         user: {
           id: user.id,
           username: user.username,
           email: user.email,
+          avatarUrl: user.avatarUrl,
+          bio: user.bio,
         },
       },
     });
@@ -294,4 +319,17 @@ export const logout = (req, res) => {
   });
 
   return res.status(STATUS.OK).json({ success: true, message: MESSAGES.AUTH.LOGOUT_SUCCESS });
+};
+
+export const getCurrentUser = async (req, res) => {
+  const user = await prisma.user.findUnique({
+    where: { id: req.user.id },
+    select: { id: true, username: true, email: true, bio: true, avatarUrl: true },
+  });
+
+  if (!user) {
+    return res.status(404).json({ success: false, message: 'User not found' });
+  }
+
+  return res.status(200).json({ success: true, user });
 };

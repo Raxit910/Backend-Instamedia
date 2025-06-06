@@ -4,13 +4,17 @@ import { REGEX } from '../constants/regex.js';
 import { STATUS } from '../constants/statusCodes.js';
 
 export const validateRegisterInput = async (req, res, next) => {
-  const { username, email, password } = req.body;
+  const { username, email, password, confirmPassword } = req.body;
 
-  if (!username || !email || !password) {
+  if (!username || !email || !password || !confirmPassword) {
     return res.status(STATUS.BAD_REQUEST).json({
       success: false,
       message: MESSAGES.INPUT.INPUT_FIELDS_ARE_REQUIRED_REGISTER,
     });
+  }
+
+  if (password !== confirmPassword) {
+    return res.status(STATUS.BAD_REQUEST).json({ message: MESSAGES.INPUT.PASSWORD_NOT_MATCH });
   }
 
   if (!REGEX.USERNAME.test(username)) {
@@ -81,6 +85,48 @@ export const validateResetPasswordInput = (req, res, next) => {
     return res.status(STATUS.BAD_REQUEST).json({
       success: false,
       message: MESSAGES.INPUT.INVALID_PASSWORD_FORMAT,
+    });
+  }
+
+  next();
+};
+
+export const validateProfileUpdate = (req, res, next) => {
+  const { username, bio } = req.body;
+  const errors = [];
+
+  // Validate username if provided
+  if (username !== undefined) {
+    if (typeof username !== 'string') {
+      errors.push('Username must be a string');
+    } else if (username.length < 3) {
+      errors.push('Username must be at least 3 characters long');
+    } else if (username.length > 30) {
+      errors.push('Username cannot exceed 30 characters');
+    } else if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+      errors.push('Username can only contain letters, numbers, and underscores');
+    }
+  }
+
+  // Validate bio if provided
+  if (bio !== undefined) {
+    if (typeof bio !== 'string') {
+      errors.push('Bio must be a string');
+    } else if (bio.length > 500) {
+      errors.push('Bio cannot exceed 500 characters');
+    }
+  }
+
+  // Check if at least one field is provided
+  if (username === undefined && bio === undefined) {
+    errors.push('At least one field (username or bio) must be provided');
+  }
+
+  if (errors.length > 0) {
+    return res.status(STATUS.BAD_REQUEST).json({
+      success: false,
+      message: MESSAGES.VALIDATION.VALIDATION_ERROR,
+      errors,
     });
   }
 

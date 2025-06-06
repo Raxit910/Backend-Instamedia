@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import prisma from './config/prisma.config.js';
 import authRoutes from './routes/auth.routes.js';
+import userRoutes from './routes/user.routes.js';
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ app.use(
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
 
 // Port
 const PORT = process.env.PORT || 5000;

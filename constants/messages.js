@@ -5,9 +5,11 @@ export const MESSAGES = {
     INVALID_CREDENTIALS: 'Invalid credentials or inactive account.',
     LOGIN_SUCCESS: 'Login successful.',
     LOGOUT_SUCCESS: 'Logged out successfully.',
+    ACCOUNT_NOT_ACTIVATED: 'Account not activated. Please check your email for activation link.',
+    NEW_ACTIVATION_LINK_SENT: 'A new activation link has been sent to your email.',
   },
   INPUT: {
-    INPUT_FIELDS_ARE_REQUIRED_REGISTER: 'Username, email, and password are required.',
+    INPUT_FIELDS_ARE_REQUIRED_REGISTER: 'All fields are required.',
     INVALID_USERNAME_FORMAT: 'Username must be alphanumeric without spaces or symbols.',
     USERNAME_ALREADY_TAKEN: 'This username is already taken.',
     INVALID_EMAIL_FORMAT: 'Invalid email format.',
@@ -16,6 +18,7 @@ export const MESSAGES = {
     INPUT_FIELDS_ARE_REQUIRED_LOGIN: 'Email or username and password are required.',
     INVALID_PASSWORD_FORMAT:
       'Password must be at least 8 characters and include uppercase, lowercase, number, and symbol.',
+    PASSWORD_NOT_MATCH: 'Passwords do not match',
   },
   ACTIVATION: {
     ACCOUNT_SUCCESSFULLY_ACTIVATED: 'Account activated successfully. You can now log in.',
@@ -24,6 +27,9 @@ export const MESSAGES = {
     MISSING_ACTIVATION_TOKEN: 'Activation token is missing.',
     INVALID_OR_EXPIRED_ACTIVATION_TOKEN: 'Invalid or expired activation token.',
     USER_NOT_FOUND: 'User not found.',
+    EMAIL_REQUIRED: 'Email is required.',
+    ACTIVATION_LINK_SENT:
+      'If an account with this email exists and is not activated, an activation link has been sent.',
   },
   FORGOT_PASSWORD: {
     EMAIL_REQUIRED: 'Email is required.',
@@ -40,8 +46,21 @@ export const MESSAGES = {
     TOKEN_REFRESHED_SUCCESS: 'Access token refreshed successfully',
     INVALID_REFRESH_TOKEN: 'Invalid refresh token',
   },
+  USER: {
+    USER_NOT_FOUND: 'User not found.',
+    PROFILE_UPDATED: 'Profile updated successfully',
+    CANNOT_FOLLOW_SELF: 'You cannot follow yourself',
+    FOLLOW_SUCCESS: 'User followed successfully',
+    UNFOLLOW_SUCCESS: 'User unfollowed successfully',
+    NO_IMAGE_PROVIDED: 'No image file provided',
+    AVATAR_UPDATED: 'Avatar updated successfully',
+    USERNAME_EXISTS: 'Username already exists',
+  },
+  VALIDATION: {
+    VALIDATION_ERROR: 'Validation failed',
+  },
   COMMON: {
-    SERVER_ERROR: 'Something went wrong. Please try again later.',
+    SERVER_ERROR: 'Internal Server Error. Please try again later.',
     UNAUTHORIZED: 'Unauthorized access.',
     NOT_FOUND: 'Resource not found.',
   },

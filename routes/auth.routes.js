@@ -2,6 +2,7 @@ import express from 'express';
 import {
   activateAccount,
   forgotPassword,
+  getCurrentUser,
   login,
   logout,
   refreshAccessToken,
@@ -13,11 +14,13 @@ import {
   validateRegisterInput,
   validateResetPasswordInput,
 } from '../middlewares/validateInput.js';
+import { verifyProfileToken } from '../utils/jwt.js';
 
 const router = express.Router();
 
 router.post('/register', validateRegisterInput, register);
 router.post('/login', validateLoginInput, login);
+router.get('/me', verifyProfileToken, getCurrentUser);
 router.get('/activate/:token', activateAccount);
 router.post('/refresh', refreshAccessToken);
 router.post('/forgot-password', forgotPassword);
