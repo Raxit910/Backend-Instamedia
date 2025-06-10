@@ -59,6 +59,22 @@ export const MESSAGES = {
   VALIDATION: {
     VALIDATION_ERROR: 'Validation failed',
   },
+  POST: {
+    POST_NOT_FOUND: 'Post not found.',
+    REMOVED_LIKE: 'Removed like from post successfully.',
+    ADDED_LIKE: 'Added like to post successfully.',
+    CREATED: 'Post created successfully.',
+    POST_UPDATED: 'Post updated successfully.',
+    POST_DELETED: 'Post deleted successfully.',
+    UNSAVED_POST_SUCCESS: 'Post unsaved successfully.',
+    SAVED_POST_SUCCESS: 'Post saved successfully.',
+  },
+  COMMENT: {
+    EMPTY_COMMENT: 'Empty Comment is not accepted.',
+    COMMENT_ADDED: 'Comment added.',
+    COMMENT_NOT_FOUND: 'Comment not found.',
+    COMMENT_DELETED: 'Comment deleted successfully.',
+  },
   COMMON: {
     SERVER_ERROR: 'Internal Server Error. Please try again later.',
     UNAUTHORIZED: 'Unauthorized access.',

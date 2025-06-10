@@ -42,19 +42,19 @@ model Post {
   updatedAt DateTime @updatedAt
 
   userId String
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   images   Image[]
-  likes    Like[]
-  comments Comment[]
-  savedBy  SavedPost[]
+  likes    Like[]  
+  comments Comment[] 
+  savedBy  SavedPost[] 
 }
 
 model Image {
   id     String @id @default(uuid())
   url    String
   postId String
-  post   Post   @relation(fields: [postId], references: [id])
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
 }
 
 model Like {
@@ -62,8 +62,8 @@ model Like {
   userId String
   postId String
 
-  user User @relation(fields: [userId], references: [id])
-  post Post @relation(fields: [postId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   @@unique([userId, postId])
 }
@@ -76,8 +76,8 @@ model Comment {
   userId String
   postId String
 
-  user User @relation(fields: [userId], references: [id])
-  post Post @relation(fields: [postId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
 }
 
 model Follow {
@@ -85,8 +85,8 @@ model Follow {
   followerId  String
   followingId String
 
-  follower  User @relation("UserFollowers", fields: [followerId], references: [id])
-  following User @relation("UserFollowing", fields: [followingId], references: [id])
+  follower  User @relation("UserFollowers", fields: [followerId], references: [id], onDelete: Cascade)
+  following User @relation("UserFollowing", fields: [followingId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
 
@@ -98,7 +98,7 @@ model SavedPost {
   userId String
   postId String
 
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   post      Post     @relation(fields: [postId], references: [id])
   createdAt DateTime @default(now())
 
@@ -112,6 +112,6 @@ model Message {
   content    String
   createdAt  DateTime @default(now())
 
-  sender   User @relation("MessagesSent", fields: [senderId], references: [id])
-  receiver User @relation("MessagesReceived", fields: [receiverId], references: [id])
+  sender   User @relation("MessagesSent", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver User @relation("MessagesReceived", fields: [receiverId], references: [id], onDelete: Cascade)
 }

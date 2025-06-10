@@ -10,7 +10,8 @@ cloudinary.config({
 });
 
 // Configure Cloudinary storage for multer
-const storage = new CloudinaryStorage({
+// Avatars storage
+const avatarStorage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: 'instamedia/avatars', // Folder in Cloudinary
@@ -22,9 +23,19 @@ const storage = new CloudinaryStorage({
   },
 });
 
+// Post Images storage
+const postImageStorage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: 'instamedia/posts_images',
+    allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
+    transformation: [{ quality: 'auto', fetch_format: 'auto' }],
+  },
+});
+
 // Configure multer with Cloudinary storage
-export const upload = multer({
-  storage: storage,
+export const uploadAvatarImage = multer({
+  storage: avatarStorage,
   limits: {
     fileSize: 5 * 1024 * 1024, // 5MB limit
   },
@@ -34,6 +45,15 @@ export const upload = multer({
     } else {
       cb(new Error('Only image files are allowed!'), false);
     }
+  },
+});
+
+export const uploadPostImages = multer({
+  storage: postImageStorage,
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype.startsWith('image/')) cb(null, true);
+    else cb(new Error('Only image files are allowed!'), false);
   },
 });
 
@@ -49,12 +69,12 @@ export const deleteFromCloudinary = async (publicId) => {
 };
 
 // Helper function to extract public ID from Cloudinary URL
-export const getPublicIdFromUrl = (url) => {
+export const getPublicIdFromUrl = (url, folder = 'instamedia') => {
   if (!url) return null;
   const parts = url.split('/');
   const filename = parts[parts.length - 1];
   const publicId = filename.split('.')[0];
-  return `instamedia/avatars/${publicId}`;
+  return `${folder}/${publicId}`;
 };
 
 export default cloudinary;

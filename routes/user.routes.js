@@ -1,12 +1,10 @@
 import express from 'express';
-import { upload } from '../config/cloudinary.config.js';
+import { uploadAvatarImage } from '../config/cloudinary.config.js';
+import { getFollowers, getFollowing, toggleFollowUser } from '../controllers/follow.controller.js';
 import {
-  getFollowers,
-  getFollowing,
   getUserPreviewById,
   getUserProfile,
   searchUsers,
-  toggleFollowUser,
   updateUserProfile,
   uploadAvatar,
 } from '../controllers/user.controller.js';
@@ -32,7 +30,7 @@ const optionalAuth = (req, res, next) => {
 
 router.get('/profile/:username', optionalAuth, getUserProfile);
 router.put('/profile', requireAuth, validateProfileUpdate, updateUserProfile);
-router.post('/avatar', requireAuth, upload.single('avatar'), uploadAvatar);
+router.post('/avatar', requireAuth, uploadAvatarImage.single('avatar'), uploadAvatar);
 router.post('/follow/:targetUserId', requireAuth, toggleFollowUser);
 router.get('/:userId/followers', getFollowers);
 router.get('/:userId/following', getFollowing);
